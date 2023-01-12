@@ -1,0 +1,35 @@
+{% extends 'flatpages/default.html' %}
+
+{% load d36_filters %}
+
+{% block title %}
+<h1> New1 </h1>
+{% endblock title %}
+
+{% block content %}
+<a href="/accounts/login" class="btn btn-secondary btn-sm">Log in</a>
+<a href="/accounts/logout" class="btn btn-secondary btn-sm">Log Out</a>
+<td><h1>{{ new1.title|censor }}</h1></td>
+<td>
+    {% if new1.post_category.all %}
+        Категории:
+        {% endif %}
+{% for cat in new1.post_category.all %}
+    <a href="{% url 'category_list' cat.id %}">{{ cat.name }}</a>
+    {% endfor %}
+</td>
+<br>
+<h4>
+{{ new1.time_add|date:'d M Y' }}
+{{ new1.time_add|time }}
+</h4>
+<br>
+<td>{{ new1.text|censor}}</td>
+<br>
+{% if perms.news.delete_post %}
+    <td><a href="{{new1.get_absolute_url}}/delete">Удалить</a></td>
+{% endif %}
+{% if perms.news.change_post %}
+    <td><a href="{{new1.get_absolute_url}}/update">Изменить</a></td>
+{% endif %}
+{% endblock content %}
